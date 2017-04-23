@@ -23,7 +23,7 @@ public class SmallPassengerTrain extends Train {
 	@Override
 	public void render(ShapeRenderer renderer){
 		if(!this.inStation()){
-			Color col = this.forward ? FORWARD_COLOUR : BACKWARD_COLOUR;
+			Color col = this.isForward() ? FORWARD_COLOUR : BACKWARD_COLOUR;
 			float percentage = this.passengers.size()/10f;
 			renderer.setColor(col.cpy().lerp(Color.MAROON, percentage));
 			// We also get slightly bigger with passengers
