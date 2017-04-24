@@ -30,6 +30,8 @@ public class Train {
 	public static final float TRAIN_WIDTH=4;
 	public static final float TRAIN_LENGTH = 6;
 	public static final float TRAIN_SPEED=50f;
+	public static final int BIG_SIZE = 80;
+	public static final int SMALL_SIZE = 10;
 	
 	// The train's name
 	
@@ -57,15 +59,22 @@ public class Train {
 	
 	
 	private State previousState = null;
+	
+	//
+	
+	private Color displayColour;
+	private int trainSize;
 
 	
-	public Train(Line trainLine, Station start, boolean forward, String name){
+	public Train(Line trainLine, Station start, boolean forward, String name, Color colour, int trainSize){
 		this.trainLine = trainLine;
 		this.station = start;
 		this.state = State.FROM_DEPOT;
 		this.setForward(forward);
 		this.passengers = new ArrayList<Passenger>();
 		this.name = name;
+		this.displayColour = colour;
+		this.setTrainSize(trainSize);
 	}
 
 	public void update(float delta){
@@ -198,7 +207,10 @@ public class Train {
 	}
 
 	public void embark(Passenger p) throws Exception {
-		throw new Exception();
+		if(this.passengers.size() > trainSize){
+			throw new Exception();
+		}
+		this.passengers.add(p);
 	}
 
 
@@ -233,8 +245,9 @@ public class Train {
 	public void render(ShapeRenderer renderer){
 		if(!this.inStation()){
 			Color col = this.isForward() ? FORWARD_COLOUR : BACKWARD_COLOUR;
-			renderer.setColor(col);
-			renderer.circle(this.pos.x, this.pos.y, TRAIN_WIDTH);
+			float percentage = this.passengers.size()/10f;
+			renderer.setColor(col.cpy().lerp(displayColour, percentage));
+			renderer.circle(this.pos.x, this.pos.y, TRAIN_WIDTH*(1+percentage));
 		}
 	}
 
@@ -244,6 +257,14 @@ public class Train {
 
 	public void setForward(boolean forward) {
 		this.forward = forward;
+	}
+
+	public int getTrainSize() {
+		return trainSize;
+	}
+
+	public void setTrainSize(int trainSize) {
+		this.trainSize = trainSize;
 	}
 	
 }

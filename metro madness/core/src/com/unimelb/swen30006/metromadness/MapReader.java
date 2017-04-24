@@ -19,8 +19,7 @@ import com.unimelb.swen30006.metromadness.routers.SimpleRouter;
 import com.unimelb.swen30006.metromadness.stations.ActiveStation;
 import com.unimelb.swen30006.metromadness.stations.Station;
 import com.unimelb.swen30006.metromadness.tracks.Line;
-import com.unimelb.swen30006.metromadness.trains.BigPassengerTrain;
-import com.unimelb.swen30006.metromadness.trains.SmallPassengerTrain;
+import com.unimelb.swen30006.metromadness.trains.CargoTrain;
 import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class MapReader {
@@ -109,12 +108,17 @@ public class MapReader {
 		
 		// Make the train
 		if(type.equals("BigPassenger")){
-			return new BigPassengerTrain(l,s,dir,name);
+			return new Train(l,s,dir,name, Color.RED, Train.BIG_SIZE);
 		} else if (type.equals("SmallPassenger")){
-			return new SmallPassengerTrain(l,s,dir,name);
-		} else {
-			return new Train(l, s, dir,name);
+			return new Train(l,s,dir,name, Color.BLUE, Train.SMALL_SIZE);
+		} else if (type.equals("BigCargo")){
+			return new CargoTrain(l, s, dir,name, Color.YELLOW, Train.BIG_SIZE, 1000);
+		} else if (type.equals("SmallCargo")){
+			return new CargoTrain(l, s, dir,name, Color.GREEN, Train.SMALL_SIZE, 200);
+		} else{
+			return new Train(l,s, dir, name, Color.BLACK, Train.BIG_SIZE);
 		}
+		
 	}
 
 	private Station processStation(Element e){
