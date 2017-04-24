@@ -1,6 +1,7 @@
 package com.unimelb.swen30006.metromadness;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -10,26 +11,21 @@ import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class Simulation {
 	
-	public ArrayList<Station> stations;
-	public ArrayList<Line> lines;
-	public ArrayList<Train> trains;
+	private ArrayList<Station> stations;
+	private ArrayList<Line> lines;
+	private ArrayList<Train> trains;
 	
-	public Simulation(String fileName){
+	public Simulation(){
 		// Create a map reader and read in the file
-		MapReader m = new MapReader(fileName);
-		m.process();
 		
 		// Create a list of lines
 		this.lines = new ArrayList<Line>();
-		this.lines.addAll(m.getLines());
 				
 		// Create a list of stations
 		this.stations = new ArrayList<Station>();
-		this.stations.addAll(m.getStations());
 		
 		// Create a list of trains
 		this.trains = new ArrayList<Train>();
-		this.trains.addAll(m.getTrains());
 	}
 	
 	
@@ -52,5 +48,29 @@ public class Simulation {
 		for(Station s: this.stations){
 			s.render(renderer);
 		}
+	}
+	
+	public ArrayList<Station> getStations(){
+		return this.stations;
+	}
+	
+	public ArrayList<Line> getLines(){
+		return this.lines;
+	}
+	
+	public ArrayList<Train> getTrains(){
+		return this.trains;
+	}
+	
+	public void setStations(Collection<Station> stations){
+		this.stations.addAll(stations);
+	}
+	
+	public void setLines(Collection<Line> lines){
+		this.lines.addAll(lines);
+	}
+	
+	public void setTrains(Collection<Train> trains){
+		this.trains.addAll(trains);
 	}
 }
