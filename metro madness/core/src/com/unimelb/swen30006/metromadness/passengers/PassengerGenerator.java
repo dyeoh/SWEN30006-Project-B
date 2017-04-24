@@ -61,7 +61,7 @@ public class PassengerGenerator {
 		}
 		Station s = l.stations.get(index);
 		
-		return this.s.generatePassenger(idGen++, random, s);
+		return new Passenger(idGen++, random, this.s, s);
 	}
 	
 }

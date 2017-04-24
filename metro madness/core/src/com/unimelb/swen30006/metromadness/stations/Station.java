@@ -2,7 +2,6 @@ package com.unimelb.swen30006.metromadness.stations;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -88,10 +87,5 @@ public class Station {
 		return "Station [position=" + position + ", name=" + name + ", trains=" + trains.size()
 				+ ", router=" + router + "]";
 	}
-
-	public Passenger generatePassenger(int id, Random random, Station s) {
-		return new Passenger(id, random, this, s);
-	}
-	
 	
 }
