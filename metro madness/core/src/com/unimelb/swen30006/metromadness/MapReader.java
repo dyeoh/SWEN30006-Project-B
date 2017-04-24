@@ -25,19 +25,22 @@ import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class MapReader {
 
-	public ArrayList<Train> trains;
-	public HashMap<String, Station> stations;
-	public HashMap<String, Line> lines;
+	private ArrayList<Train> trains;
+	private HashMap<String, Station> stations;
+	private HashMap<String, Line> lines;
 
-	public boolean processed;
-	public String filename;
+	private boolean processed;
+	private String filename;
+	private Simulation sim;
 
-	public MapReader(String filename){
+	public MapReader(Simulation sim, String filename){
 		this.trains = new ArrayList<Train>();
 		this.stations = new HashMap<String, Station>();
 		this.lines = new HashMap<String, Line>();
 		this.filename = filename;
 		this.processed = false;
+		this.sim = sim;
+		this.process();
 	}
 
 	public void process(){
@@ -74,26 +77,18 @@ public class MapReader {
 			
 			this.processed = true;
 			
+			//set values of simulation
+			sim.setLines(this.lines.values());
+			sim.setStations(this.stations.values());
+			sim.setTrains(this.trains);
+			
+			
 		} catch (Exception e){
 			e.printStackTrace();
 			System.exit(0);
 		}
 	}
 	
-	public Collection<Train> getTrains(){
-		if(!this.processed) { this.process(); }
-		return this.trains;
-	}
-	
-	public Collection<Line> getLines(){
-		if(!this.processed) { this.process(); }
-		return this.lines.values();
-	}
-	
-	public Collection<Station> getStations(){
-		if(!this.processed) { this.process(); }
-		return this.stations.values();
-	}
 
 	private Train processTrain(Element e){
 		// Retrieve the values
