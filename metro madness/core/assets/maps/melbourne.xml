@@ -66,7 +66,7 @@
 			<max_passengers> 100 </max_passengers>
 		</station>
 		<station>
-			<type>Active</type>
+			<type>Cargo</type>
 			<name>Flinders St</name>
 			<x_loc>2800</x_loc>
 			<y_loc>4800</y_loc>
@@ -74,7 +74,7 @@
 			<max_passengers> 100 </max_passengers>
 		</station>
 			<station>
-			<type>Active</type>
+			<type>Cargo</type>
 			<name>Southern Cross</name>
 			<x_loc>2240</x_loc>
 			<y_loc>4800</y_loc>
@@ -82,7 +82,7 @@
 			<max_passengers> 100 </max_passengers>
 		</station>	
 		<station>
-			<type>Active</type>
+			<type>Cargo</type>
 			<name>Flagstaff</name>
 			<x_loc>2240</x_loc>
 			<y_loc>5200</y_loc>
@@ -90,7 +90,7 @@
 			<max_passengers> 100 </max_passengers>
 		</station>
 		<station>
-			<type>Active</type>
+			<type>Cargo</type>
 			<name>Melbourne Central</name>
 			<x_loc>2800</x_loc>
 			<y_loc>5200</y_loc>
@@ -210,7 +210,7 @@
 			<max_passengers> 100 </max_passengers>
 		</station>
 		<station>
-			<type>Active</type>
+			<type>Cargo</type>
 			<name>Craigieburn</name>
 			<x_loc>2240</x_loc>
 			<y_loc>7700</y_loc>
