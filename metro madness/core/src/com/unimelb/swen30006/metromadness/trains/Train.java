@@ -17,7 +17,7 @@ import com.unimelb.swen30006.metromadness.tracks.Track;
 public class Train {
 	
 	// Logger
-	private static Logger logger = LogManager.getLogger();
+	protected static Logger logger = LogManager.getLogger();
 	// The state that a train can be in 
 	public enum State {
 		IN_STATION, READY_DEPART, ON_ROUTE, WAITING_ENTRY, FROM_DEPOT
@@ -45,7 +45,7 @@ public class Train {
 	private float departureTimer;
 	
 	// Station and track and position information
-	private Station station; 
+	protected Station station; 
 	private Track track;
 	protected Point2D.Float pos;
 
@@ -63,7 +63,7 @@ public class Train {
 	//
 	
 	private Color displayColour;
-	private int trainSize;
+	protected int trainSize;
 
 	
 	public Train(Line trainLine, Station start, boolean forward, String name, Color colour, int trainSize){
@@ -206,6 +206,7 @@ public class Train {
 		this.pos.setLocation(newX, newY);
 	}
 
+	
 	public void embark(Passenger p) throws Exception {
 		if(this.passengers.size() > trainSize){
 			throw new Exception();

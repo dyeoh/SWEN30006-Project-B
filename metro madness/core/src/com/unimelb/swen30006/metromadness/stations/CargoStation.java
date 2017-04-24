@@ -66,7 +66,7 @@ public class CargoStation extends Station {
 			}
 		}
 	}
-	
+
 	public void render(ShapeRenderer renderer){
 		float radius = RADIUS;
 		for(int i=0; (i<this.lines.size() && i<MAX_LINES); i++){
