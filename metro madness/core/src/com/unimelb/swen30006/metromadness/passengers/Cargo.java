@@ -14,4 +14,5 @@ public class Cargo {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
+	
 }

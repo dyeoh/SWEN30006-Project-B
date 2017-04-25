@@ -38,6 +38,9 @@ public class CargoTrain extends Train {
 	public void embark(Passenger p) throws Exception {
 		int cargoWeight = p.getCargo().getWeight();
 		int newWeight = currentCargo + cargoWeight;
+		if(p.getCargo().getWeight() == 0){
+			return;
+		}
 		/*System.out.println("New Weight : " + newWeight + "CargoCap : " + cargoCapacity);*/
 		if(this.passengers.size() > trainSize || newWeight > cargoCapacity){
 			/*System.out.println("PASSENGER DID NOT GET ON");*/

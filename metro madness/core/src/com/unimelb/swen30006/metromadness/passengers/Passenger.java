@@ -1,8 +1,5 @@
 package com.unimelb.swen30006.metromadness.passengers;
 
-import java.util.Random;
-
-import com.unimelb.swen30006.metromadness.stations.CargoStation;
 import com.unimelb.swen30006.metromadness.stations.Station;
 
 public class Passenger {
@@ -14,18 +11,13 @@ public class Passenger {
 	public boolean reachedDestination;
 	public Cargo cargo;
 	
-	public Passenger(int id, Random random, Station start, Station end){
+	public Passenger(int id, int weight, Station start, Station end){
 		this.id = id;
 		this.beginning = start;
 		this.destination = end;
 		this.reachedDestination = false;
 		this.travelTime = 0;
-		if(start instanceof CargoStation){
-			this.cargo = generateCargo(random);
-		}
-		else{
-			this.cargo = new Cargo(0);
-		}
+		this.cargo = new Cargo(weight);
 	}
 	
 	public void update(float time){
@@ -35,9 +27,6 @@ public class Passenger {
 	}
 	public Cargo getCargo(){
 		return cargo;
-	}
-	public Cargo generateCargo(Random random){
-		return new Cargo(random.nextInt(51));
 	}
 	
 }

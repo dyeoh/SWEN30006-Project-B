@@ -3,6 +3,7 @@ package com.unimelb.swen30006.metromadness.passengers;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.unimelb.swen30006.metromadness.stations.CargoStation;
 import com.unimelb.swen30006.metromadness.stations.Station;
 import com.unimelb.swen30006.metromadness.tracks.Line;
 
@@ -46,22 +47,59 @@ public class PassengerGenerator {
 		
 		// If we are the end of the line then set our direction forward or backward
 		if(current_station == 0){
+			//System.out.println("forward");
 			forward = true;
 		} else if (current_station == l.stations.size()-1){
+			//System.out.println("backward");
 			forward = false;
 		}
 		
 		// Find the station
 		int index = 0;
 		
-		if (forward){
-			index = random.nextInt(l.stations.size()-1-current_station) + current_station + 1;
-		} else {
-			index = current_station - 1 - random.nextInt(current_station);
+		//Flag the shiz
+		int flag = 0;
+		if(this.s instanceof CargoStation){
+			flag = 1;
 		}
-		Station s = l.stations.get(index);
 		
-		return new Passenger(idGen++, random, this.s, s);
+		if (forward){
+			if (flag == 0){
+				index = random.nextInt(l.stations.size()-1-current_station) + current_station + 1;
+				Station s = l.stations.get(index);
+				return new Passenger(idGen++, 0, this.s, s);
+			}
+			else{
+				while(current_station <= l.stations.size()-1){
+			
+				//System.out.println("current: " + current_station + " max: " + (l.stations.size()-1));
+				if(l.stations.get(current_station) instanceof CargoStation 
+						&& current_station != 0){
+					Station s = l.stations.get(current_station);
+					return new Passenger(idGen++, random.nextInt(51), this.s, s);
+				}
+				current_station ++;
+				}
+			}
+		}
+		else {
+			if (flag == 0){
+				index = current_station - 1 - random.nextInt(current_station);
+				Station s = l.stations.get(index);
+				return new Passenger(idGen++, 0, this.s, s);
+			}
+			else{
+				while(current_station >= 0){
+					if(l.stations.get(current_station) instanceof CargoStation
+							&& current_station != l.stations.size()-1){
+						Station s = l.stations.get(current_station);
+						return new Passenger(idGen++, random.nextInt(51), this.s, s);
+					}
+					current_station --;
+				}
+			}
+		}
+		return null;
 	}
 	
 }

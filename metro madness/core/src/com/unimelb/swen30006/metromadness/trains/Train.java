@@ -113,6 +113,10 @@ public class Train {
 				logger.info(this.name+" is in "+this.station.name+" Station.");
 			}
 			
+			if(passengers.isEmpty()){
+				return;
+			}
+			
 			// When in station we want to disembark passengers 
 			// and wait 10 seconds for incoming passengers
 			if(!this.disembarked){
