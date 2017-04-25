@@ -146,7 +146,13 @@ public class Train {
 			break;
 		case READY_DEPART:
 			if(hasChanged){
-				logger.info(this.name+ " is ready to depart for "+this.station.name+" Station!");
+				try{
+					Station next = this.trainLine.nextStation(this.station, this.isForward());
+					logger.info(this.name+ " is ready to depart for "+next.name+" Station!");
+				}
+				catch(Exception e){
+					//e.printStackTrace();
+				}
 			}
 			
 			// When ready to depart, check that the track is clear and if
