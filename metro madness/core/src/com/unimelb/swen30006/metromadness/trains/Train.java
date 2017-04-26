@@ -35,30 +35,30 @@ public class Train {
 	
 	// The train's name
 	
-	private String name;
+	protected String name;
 
 	// The line that this is traveling on
-	private Line trainLine;
+	protected Line trainLine;
 
 	// Passenger Information
 	protected ArrayList<Passenger> passengers;
-	private float departureTimer;
+	protected float departureTimer;
 	
 	// Station and track and position information
 	protected Station station; 
-	private Track track;
+	protected Track track;
 	protected Point2D.Float pos;
 
 	// Direction and direction
-	private boolean forward;
-	private State state;
+	protected boolean forward;
+	protected State state;
 
 	// State variables
 	private int numTrips;
-	private boolean disembarked;
+	protected boolean disembarked;
 	
 	
-	private State previousState = null;
+	protected State previousState = null;
 	
 	//
 	
@@ -218,7 +218,7 @@ public class Train {
 
 	
 	public void embark(Passenger p) throws Exception {
-		if(this.passengers.size() > trainSize){
+		if(this.passengers.size() > trainSize || p.getCargo().getWeight() != 0){
 			throw new Exception();
 		}
 		this.passengers.add(p);

@@ -74,7 +74,7 @@ public class PassengerGenerator {
 			
 				//System.out.println("current: " + current_station + " max: " + (l.stations.size()-1));
 				if(l.stations.get(current_station) instanceof CargoStation 
-						&& current_station != 0){
+						&& l.stations.get(current_station) != this.s){
 					Station s = l.stations.get(current_station);
 					return new Passenger(idGen++, random.nextInt(51), this.s, s);
 				}
@@ -83,7 +83,7 @@ public class PassengerGenerator {
 			}
 		}
 		else {
-			if (flag == 0){
+			if (flag == 0 ){
 				index = current_station - 1 - random.nextInt(current_station);
 				Station s = l.stations.get(index);
 				return new Passenger(idGen++, 0, this.s, s);
@@ -91,7 +91,7 @@ public class PassengerGenerator {
 			else{
 				while(current_station >= 0){
 					if(l.stations.get(current_station) instanceof CargoStation
-							&& current_station != l.stations.size()-1){
+							&& l.stations.get(current_station) != this.s){
 						Station s = l.stations.get(current_station);
 						return new Passenger(idGen++, random.nextInt(51), this.s, s);
 					}

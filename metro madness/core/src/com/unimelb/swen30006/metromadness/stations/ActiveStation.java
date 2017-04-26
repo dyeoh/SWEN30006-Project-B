@@ -70,7 +70,9 @@ public class ActiveStation extends Station {
 						logger.info("Passenger "+p.id+" carrying "+p.getCargo().getWeight() +" kg embarking at "+this.name+" heading to "+p.destination.name);
 						t.embark(p);
 					} catch(Exception e){
-						this.waiting.add(p);
+						if(p != null){
+							this.waiting.add(p);
+						}
 					}
 				}
 

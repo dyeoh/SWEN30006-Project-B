@@ -41,9 +41,6 @@ public class CargoStation extends Station {
 			// Add the waiting passengers
 			Iterator<Passenger> pIter = this.waiting.iterator();
 			while(pIter.hasNext()){
-				if(!(t instanceof CargoTrain)){
-					return;
-				}
 				Passenger p = pIter.next();
 				try {
 					logger.info("Passenger "+p.id+" carrying "+p.getCargo().getWeight() +" kg cargo embarking at "+this.name+" heading to "+p.destination.name);
@@ -71,7 +68,9 @@ public class CargoStation extends Station {
 						t.embark(p);
 					}
 					catch(Exception e){
-						this.waiting.add(p);
+						if(p != null){
+							this.waiting.add(p);
+						}
 					}
 					
 				}
