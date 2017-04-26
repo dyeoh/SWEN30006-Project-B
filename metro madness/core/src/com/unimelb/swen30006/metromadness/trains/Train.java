@@ -1,3 +1,15 @@
+/*
+ * SWEN30006 Software Modelling and Design
+ * 2017 Semester 1
+ * 
+ * Project B - Metro Madness
+ * 
+ * GROUP 73
+ * Darren Yeoh Cheang Leng - 715863
+ * Ziqian Qiao -
+ * Marco Vermaak -
+ *
+ */
 package com.unimelb.swen30006.metromadness.trains;
 
 import java.awt.geom.Point2D;
@@ -18,7 +30,7 @@ public class Train {
 	
 	// Logger
 	protected static Logger logger = LogManager.getLogger();
-	// The state that a train can be in 
+	// The state that a train can be in
 	public enum State {
 		IN_STATION, READY_DEPART, ON_ROUTE, WAITING_ENTRY, FROM_DEPOT
 	}
@@ -76,7 +88,8 @@ public class Train {
 		this.displayColour = colour;
 		this.setTrainSize(trainSize);
 	}
-
+	
+	//Updates the state of the train and all the passengers
 	public void update(float delta){
 		// Update all passengers
 		for(Passenger p: this.passengers){
@@ -166,7 +179,7 @@ public class Train {
 					this.station = next;
 
 				} catch (Exception e) {
-//					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				this.track.enter(this);
 				this.state = State.ON_ROUTE;
@@ -208,6 +221,7 @@ public class Train {
 
 	}
 
+	//Moves the train
 	public void move(float delta){
 		// Work out where we're going
 		float angle = angleAlongLine(this.pos.x,this.pos.y,this.station.position.x,this.station.position.y);
@@ -216,7 +230,7 @@ public class Train {
 		this.pos.setLocation(newX, newY);
 	}
 
-	
+	//Embraks the passengers only if they are not carrying any cargo
 	public void embark(Passenger p) throws Exception {
 		if(this.passengers.size() > trainSize || p.getCargo().getWeight() != 0){
 			throw new Exception();
@@ -224,7 +238,7 @@ public class Train {
 		this.passengers.add(p);
 	}
 
-
+	//Disembarks the passengers if they have reached their destination
 	public ArrayList<Passenger> disembark(){
 		ArrayList<Passenger> disembarking = new ArrayList<Passenger>();
 		Iterator<Passenger> iterator = this.passengers.iterator();
@@ -253,12 +267,20 @@ public class Train {
 		return (float) Math.atan2((y2-y1),(x2-x1));
 	}
 
+	//Draws the train on the map
 	public void render(ShapeRenderer renderer){
 		if(!this.inStation()){
 			Color col = this.isForward() ? FORWARD_COLOUR : BACKWARD_COLOUR;
-			float percentage = this.passengers.size()/10f;
-			renderer.setColor(col.cpy().lerp(displayColour, percentage));
-			renderer.circle(this.pos.x, this.pos.y, TRAIN_WIDTH*(1+percentage));
+			if(trainSize > 10){
+				float percentage = this.passengers.size()/10f;
+				renderer.setColor(col.cpy().lerp(displayColour, percentage));
+				renderer.circle(this.pos.x, this.pos.y, TRAIN_WIDTH*(1+percentage));
+			}
+			else{
+				float percentage = this.passengers.size()/20f;
+				renderer.setColor(col.cpy().lerp(displayColour, percentage));
+				renderer.circle(this.pos.x, this.pos.y, TRAIN_WIDTH*(1+percentage));
+			}
 		}
 	}
 

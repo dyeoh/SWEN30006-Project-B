@@ -1,3 +1,15 @@
+/*
+ * SWEN30006 Software Modelling and Design
+ * 2017 Semester 1
+ * 
+ * Project B - Metro Madness
+ * 
+ * GROUP 73
+ * Darren Yeoh Cheang Leng - 715863
+ * Ziqian Qiao -
+ * Marco Vermaak -
+ *
+ */
 package com.unimelb.swen30006.metromadness.stations;
 
 import java.util.ArrayList;
@@ -19,7 +31,6 @@ public class ActiveStation extends Station {
 	// Logger
 	private static Logger logger = LogManager.getLogger();
 	
-	public PassengerGenerator g;
 	public ArrayList<Passenger> waiting;
 	public float maxVolume;
 	
@@ -30,8 +41,10 @@ public class ActiveStation extends Station {
 		this.maxVolume = maxPax;
 	}
 	
+	//Handles the entering of a train into an active station
 	@Override
 	public void enter(Train t) throws Exception {
+		//Checks if train can enter
 		if(trains.size() >= PLATFORMS){
 			throw new Exception();
 		} else {
@@ -41,6 +54,7 @@ public class ActiveStation extends Station {
 			// Add the waiting passengers
 			Iterator<Passenger> pIter = this.waiting.iterator();
 			while(pIter.hasNext()){
+				//CargoTrains can only pick up waiting passengers with cargo at CargoStations
 				if(t instanceof CargoTrain){
 					return;
 				}
@@ -59,6 +73,7 @@ public class ActiveStation extends Station {
 			if (this.waiting.size() > maxVolume){
 				return;
 			}
+			
 			// Add the new passenger
 			Passenger[] ps = this.g.generatePassengers();
 			for(Passenger p: ps){
@@ -80,6 +95,7 @@ public class ActiveStation extends Station {
 		}
 	}
 	
+	//Renders the active Station
 	public void render(ShapeRenderer renderer){
 		float radius = RADIUS;
 		for(int i=0; (i<this.lines.size() && i<MAX_LINES); i++){

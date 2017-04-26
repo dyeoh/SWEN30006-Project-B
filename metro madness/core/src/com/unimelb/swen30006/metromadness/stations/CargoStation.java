@@ -1,3 +1,15 @@
+/*
+ * SWEN30006 Software Modelling and Design
+ * 2017 Semester 1
+ * 
+ * Project B - Metro Madness
+ * 
+ * GROUP 73
+ * Darren Yeoh Cheang Leng - 715863
+ * Ziqian Qiao -
+ * Marco Vermaak -
+ *
+ */
 package com.unimelb.swen30006.metromadness.stations;
 
 import java.util.ArrayList;
@@ -19,7 +31,6 @@ public class CargoStation extends Station {
 	// Logger
 	private static Logger logger = LogManager.getLogger();
 	
-	public PassengerGenerator g;
 	public ArrayList<Passenger> waiting;
 	public float maxVolume;
 	
@@ -30,8 +41,10 @@ public class CargoStation extends Station {
 		this.maxVolume = maxPax;
 	}
 	
+	//Handles the entering of a train into a cargo station
 	@Override
 	public void enter(Train t) throws Exception {
+		//Checks if train can enter
 		if(trains.size() >= PLATFORMS){
 			throw new Exception();
 		} else {
@@ -72,13 +85,12 @@ public class CargoStation extends Station {
 							this.waiting.add(p);
 						}
 					}
-					
 				}
-					
 			}
 		}
 	}
 
+	//Renders the cargo station
 	public void render(ShapeRenderer renderer){
 		float radius = RADIUS;
 		for(int i=0; (i<this.lines.size() && i<MAX_LINES); i++){
@@ -90,7 +102,7 @@ public class CargoStation extends Station {
 		
 		// Calculate the percentage
 		float t = this.trains.size()/(float)PLATFORMS;
-		Color c = Color.WHITE.cpy().lerp(Color.YELLOW, t);
+		Color c = Color.WHITE.cpy().lerp(Color.BLUE, t);
 		if(this.waiting.size() > 0){
 			c = Color.GREEN;
 		}
@@ -98,10 +110,4 @@ public class CargoStation extends Station {
 		renderer.setColor(c);
 		renderer.circle(this.position.x, this.position.y, radius, NUM_CIRCLE_STATMENTS);
 	}
-	
-	@Override
-	public boolean canEnter(Line l) throws Exception {
-		return trains.size() < PLATFORMS;
-	}
-
 }

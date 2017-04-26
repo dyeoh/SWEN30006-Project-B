@@ -1,21 +1,36 @@
+/*
+ * SWEN30006 Software Modelling and Design
+ * 2017 Semester 1
+ * 
+ * Project B - Metro Madness
+ * 
+ * GROUP 73
+ * Darren Yeoh Cheang Leng - 715863
+ * Ziqian Qiao -
+ * Marco Vermaak -
+ *
+ */
 package com.unimelb.swen30006.metromadness.trains;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.unimelb.swen30006.metromadness.passengers.Passenger;
+import com.unimelb.swen30006.metromadness.passengers.PassengerGenerator;
 import com.unimelb.swen30006.metromadness.stations.CargoStation;
 import com.unimelb.swen30006.metromadness.stations.Station;
 import com.unimelb.swen30006.metromadness.tracks.Line;
-import com.unimelb.swen30006.metromadness.trains.Train.State;
 
 public class CargoTrain extends Train {
 	
+	//Initialize variables for CargoTrain
 	private int cargoCapacity;
 	private int currentCargo;
 
+	//Class initializer
 	public CargoTrain(Line trainLine, Station start, boolean forward, String name, Color colour, int trainSize, int cargoCapacity) {
 		super(trainLine, start, forward, name, colour, trainSize);
 		this.setCargoCapacity(cargoCapacity);
@@ -37,6 +52,7 @@ public class CargoTrain extends Train {
 		this.currentCargo = currentCargo;
 	}
 
+	//Embarks passenger with luggage storing it into the cargo of the train
 	@Override
 	public void embark(Passenger p) throws Exception {
 		int cargoWeight = p.getCargo().getWeight();
@@ -44,7 +60,7 @@ public class CargoTrain extends Train {
 		if(cargoWeight == 0){
 			throw new Exception();
 		}
-		System.out.println("New Weight : " + newWeight + "CargoCap : " + cargoCapacity);
+		//System.out.println("New Weight : " + newWeight + "CargoCap : " + cargoCapacity);
 		if(this.passengers.size() > trainSize || newWeight > cargoCapacity){
 			/*System.out.println("PASSENGER DID NOT GET ON");*/
 			throw new Exception();
@@ -53,6 +69,7 @@ public class CargoTrain extends Train {
 		currentCargo = newWeight;
 	}
 	
+	//Disembarks the passenger removing their luggage from the train
 	@Override
 	public ArrayList<Passenger> disembark(){
 		ArrayList<Passenger> disembarking = new ArrayList<Passenger>();
@@ -69,6 +86,8 @@ public class CargoTrain extends Train {
 		return disembarking;
 	}
 	
+	
+	//Updates the state of the cargo train and passengers
 	@Override
 	public void update(float delta){
 		// Update all passengers
@@ -106,30 +125,52 @@ public class CargoTrain extends Train {
 				logger.info(this.name+" is in "+this.station.name+" Station.");
 			}
 			
-			// When in station we want to disembark passengers 
-			// and wait 10 seconds for incoming passengers
-			if(!this.disembarked){
-				this.disembark();
-				this.departureTimer = this.station.getDepartureTime();
-				this.disembarked = true;
-			} else {
-				// Count down if departure timer. 
-				if(this.departureTimer>0){
-					this.departureTimer -= delta;
+			if(this.station instanceof CargoStation){
+				PassengerGenerator gen = this.station.getGenerator();
+				Random random = new Random(30006);
+				if(gen.generatePassenger(random) == null){
+					return;
+				}
+				// When in station we want to disembark passengers 
+				// and wait 10 seconds for incoming passengers
+				if(!this.disembarked){
+					this.disembark();
+					this.departureTimer = this.station.getDepartureTime();
+					this.disembarked = true;
 				} else {
-					// We are ready to depart, find the next track and wait until we can enter 
-					try {
-						boolean endOfLine = this.trainLine.endOfLine(this.station);
-						if(endOfLine){
-							this.setForward(!this.isForward());
+					// Count down if departure timer. 
+					if(this.departureTimer>0){
+						this.departureTimer -= delta;
+					} else {
+						// We are ready to depart, find the next track and wait until we can enter 
+						try {
+							boolean endOfLine = this.trainLine.endOfLine(this.station);
+							if(endOfLine){
+								this.setForward(!this.isForward());
+							}
+							this.track = this.trainLine.nextTrack(this.station, this.isForward());
+							this.state = State.READY_DEPART;
+							break;
+						} catch (Exception e){
+							// Massive error.
+							return;
 						}
-						this.track = this.trainLine.nextTrack(this.station, this.isForward());
-						this.state = State.READY_DEPART;
-						break;
-					} catch (Exception e){
-						// Massive error.
-						return;
 					}
+				}
+			}
+			else{
+				// We are ready to depart, find the next track and wait until we can enter 
+				try {
+					boolean endOfLine = this.trainLine.endOfLine(this.station);
+					if(endOfLine){
+						this.setForward(!this.isForward());
+					}
+					this.track = this.trainLine.nextTrack(this.station, this.isForward());
+					this.state = State.READY_DEPART;
+					break;
+				} catch (Exception e){
+					// Massive error.
+					return;
 				}
 			}
 			break;
@@ -193,8 +234,6 @@ public class CargoTrain extends Train {
 			}
 			break;
 		}
-
-
 	}
 
 }

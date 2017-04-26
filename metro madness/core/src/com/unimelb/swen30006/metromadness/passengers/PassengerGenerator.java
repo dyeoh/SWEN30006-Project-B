@@ -1,3 +1,15 @@
+/*
+ * SWEN30006 Software Modelling and Design
+ * 2017 Semester 1
+ * 
+ * Project B - Metro Madness
+ * 
+ * GROUP 73
+ * Darren Yeoh Cheang Leng - 715863
+ * Ziqian Qiao -
+ * Marco Vermaak -
+ *
+ */
 package com.unimelb.swen30006.metromadness.passengers;
 
 import java.util.ArrayList;
@@ -30,6 +42,7 @@ public class PassengerGenerator {
 		this.maxVolume = max;
 	}
 	
+	//Generates a random amount of passengers
 	public Passenger[] generatePassengers(){
 		int count = random.nextInt(4)+1;
 		Passenger[] passengers = new Passenger[count];
@@ -39,10 +52,13 @@ public class PassengerGenerator {
 		return passengers;
 	}
 	
+	//Generates a random passenger based on the station, returns null if fails
 	public Passenger generatePassenger(Random random){
 		// Pick a random station from the line
 		Line l = this.lines.get(random.nextInt(this.lines.size()));
 		int current_station = l.stations.indexOf(this.s);
+		
+		//Sets direction of the passenger at random
 		boolean forward = random.nextBoolean();
 		
 		// If we are the end of the line then set our direction forward or backward
@@ -54,24 +70,25 @@ public class PassengerGenerator {
 			forward = false;
 		}
 		
-		// Find the station
+		// Find the end station
 		int index = 0;
 		
-		//Flag the shiz
+		//Flag to check if it is a CargoStation
 		int flag = 0;
 		if(this.s instanceof CargoStation){
 			flag = 1;
 		}
 		
 		if (forward){
+			//Get random station in the forward direction if active station
 			if (flag == 0){
 				index = random.nextInt(l.stations.size()-1-current_station) + current_station + 1;
 				Station s = l.stations.get(index);
 				return new Passenger(idGen++, 0, this.s, s);
 			}
+			//Get next cargo station in the forward direction
 			else{
 				while(current_station <= l.stations.size()-1){
-			
 				//System.out.println("current: " + current_station + " max: " + (l.stations.size()-1));
 				if(l.stations.get(current_station) instanceof CargoStation 
 						&& l.stations.get(current_station) != this.s){
@@ -84,11 +101,13 @@ public class PassengerGenerator {
 		}
 		else {
 			if (flag == 0 ){
+				//Get random station in the backward direction
 				index = current_station - 1 - random.nextInt(current_station);
 				Station s = l.stations.get(index);
 				return new Passenger(idGen++, 0, this.s, s);
 			}
 			else{
+				//Get next cargo station in the backward direction
 				while(current_station >= 0){
 					if(l.stations.get(current_station) instanceof CargoStation
 							&& l.stations.get(current_station) != this.s){
@@ -99,6 +118,7 @@ public class PassengerGenerator {
 				}
 			}
 		}
+		//Passenger failed to be generated
 		return null;
 	}
 	

@@ -1,3 +1,15 @@
+/*
+ * SWEN30006 Software Modelling and Design
+ * 2017 Semester 1
+ * 
+ * Project B - Metro Madness
+ * 
+ * GROUP 73
+ * Darren Yeoh Cheang Leng - 715863
+ * Ziqian Qiao -
+ * Marco Vermaak -
+ *
+ */
 package com.unimelb.swen30006.metromadness;
 
 import java.util.ArrayList;
@@ -24,7 +36,6 @@ import com.unimelb.swen30006.metromadness.trains.CargoTrain;
 import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class MapReader {
-	//HI
 
 	public ArrayList<Train> trains;
 	public HashMap<String, Station> stations;
@@ -45,7 +56,7 @@ public class MapReader {
 		try {
 			// Build the doc factory
 			FileHandle file = Gdx.files.internal("../core/assets/maps/world.xml");			
-//			FileHandle file = Gdx.files.internal("../core/assets/maps/world.xml");
+//			FileHandle file = Gdx.files.internal("../core/assets/maps/melbourne.xml");
 			XmlReader reader = new XmlReader();
 			Element root = reader.parse(file);
 			
@@ -110,15 +121,15 @@ public class MapReader {
 		
 		// Make the train
 		if(type.equals("BigPassenger")){
-			return new Train(l,s,dir,name, Color.RED, Train.BIG_SIZE);
+			return new Train(l,s,dir,name, Color.LIGHT_GRAY, Train.BIG_SIZE);
 		} else if (type.equals("SmallPassenger")){
-			return new Train(l,s,dir,name, Color.BLUE, Train.SMALL_SIZE);
+			return new Train(l,s,dir,name, Color.MAROON, Train.SMALL_SIZE);
 		} else if (type.equals("BigCargo")){
-			return new CargoTrain(l, s, dir,name, Color.YELLOW, Train.BIG_SIZE, 1000);
+			return new CargoTrain(l, s, dir,name, Color.GREEN, Train.BIG_SIZE, 1000);
 		} else if (type.equals("SmallCargo")){
-			return new CargoTrain(l, s, dir,name, Color.GREEN, Train.SMALL_SIZE, 200);
+			return new CargoTrain(l, s, dir,name, Color.YELLOW, Train.SMALL_SIZE, 200);
 		} else{
-			return new Train(l,s, dir, name, Color.BLACK, Train.BIG_SIZE);
+			return new Train(l,s, dir, name, Color.WHITE, Train.BIG_SIZE);
 		}
 		
 	}

@@ -1,3 +1,15 @@
+/*
+ * SWEN30006 Software Modelling and Design
+ * 2017 Semester 1
+ * 
+ * Project B - Metro Madness
+ * 
+ * GROUP 73
+ * Darren Yeoh Cheang Leng - 715863
+ * Ziqian Qiao -
+ * Marco Vermaak -
+ *
+ */
 package com.unimelb.swen30006.metromadness.stations;
 
 import java.awt.geom.Point2D;
@@ -6,6 +18,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.unimelb.swen30006.metromadness.passengers.Passenger;
+import com.unimelb.swen30006.metromadness.passengers.PassengerGenerator;
 import com.unimelb.swen30006.metromadness.routers.PassengerRouter;
 import com.unimelb.swen30006.metromadness.tracks.Line;
 import com.unimelb.swen30006.metromadness.trains.Train;
@@ -23,6 +36,7 @@ public class Station {
 	public ArrayList<Train> trains;
 	public static final float DEPARTURE_TIME = 2;
 	public PassengerRouter router;
+	protected PassengerGenerator g;
 
 	public Station(float x, float y, PassengerRouter router, String name){
 		this.name = name;
@@ -86,6 +100,10 @@ public class Station {
 	public String toString() {
 		return "Station [position=" + position + ", name=" + name + ", trains=" + trains.size()
 				+ ", router=" + router + "]";
+	}
+	
+	public PassengerGenerator getGenerator(){
+		return g;
 	}
 	
 }
