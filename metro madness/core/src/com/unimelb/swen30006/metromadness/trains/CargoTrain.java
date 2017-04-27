@@ -77,7 +77,7 @@ public class CargoTrain extends Train {
 		while(iterator.hasNext()){
 			Passenger p = iterator.next();
 			if(this.station.shouldLeave(p)){
-				logger.info("Passenger "+p.id+" is disembarking at "+this.station.name);
+				logger.info("Passenger "+p.id+" is disembarking at "+this.station.getName());
 				currentCargo = currentCargo - p.getCargo().getWeight();
 				disembarking.add(p);
 				iterator.remove();
@@ -104,16 +104,16 @@ public class CargoTrain extends Train {
 		switch(this.state) {
 		case FROM_DEPOT:
 			if(hasChanged){
-				logger.info(this.name+ " is travelling from the depot: "+this.station.name+" Station...");
+				logger.info(this.name+ " is travelling from the depot: "+this.station.getName()+" Station...");
 			}
 			
 			// We have our station initialized we just need to retrieve the next track, enter the
 			// current station officially and mark as in station
 			try {
-				if(this.station.canEnter(this.trainLine)){
+				if(this.station.canEnter()){
 					
 					this.station.enter(this);
-					this.pos = (Point2D.Float) this.station.position.clone();
+					this.pos = (Point2D.Float) this.station.getPosition().clone();
 					this.state = State.IN_STATION;
 					this.disembarked = false;
 				}
@@ -122,7 +122,7 @@ public class CargoTrain extends Train {
 			}
 		case IN_STATION:
 			if(hasChanged){
-				logger.info(this.name+" is in "+this.station.name+" Station.");
+				logger.info(this.name+" is in "+this.station.getName()+" Station.");
 			}
 			
 			if(this.station instanceof CargoStation){
@@ -178,7 +178,7 @@ public class CargoTrain extends Train {
 			if(hasChanged){
 				try{
 					Station next = this.trainLine.nextStation(this.station, this.isForward());
-					logger.info(this.name+ " is ready to depart for "+next.name+" Station!");
+					logger.info(this.name+ " is ready to depart for "+next.getName()+" Station!");
 				}
 				catch(Exception e){
 					//e.printStackTrace();
@@ -204,11 +204,11 @@ public class CargoTrain extends Train {
 			break;
 		case ON_ROUTE:
 			if(hasChanged){
-				logger.info(this.name+ " enroute to "+this.station.name+" Station!");
+				logger.info(this.name+ " enroute to "+this.station.getName()+" Station!");
 			}
 			
 			// Checkout if we have reached the new station
-			if(this.pos.distance(this.station.position) < 10 ){
+			if(this.pos.distance(this.station.getPosition()) < 10 ){
 				this.state = State.WAITING_ENTRY;
 			} else {
 				move(delta);
@@ -216,15 +216,15 @@ public class CargoTrain extends Train {
 			break;
 		case WAITING_ENTRY:
 			if(hasChanged){
-				logger.info(this.name+ " is awaiting entry "+this.station.name+" Station..!");
+				logger.info(this.name+ " is awaiting entry "+this.station.getName()+" Station..!");
 			}
 			
 			// Waiting to enter, we need to check the station has room and if so
 			// then we need to enter, otherwise we just wait
 			try {
-				if(this.station.canEnter(this.trainLine)){
+				if(this.station.canEnter()){
 					this.track.leave(this);
-					this.pos = (Point2D.Float) this.station.position.clone();
+					this.pos = (Point2D.Float) this.station.getPosition().clone();
 					this.station.enter(this);
 					this.state = State.IN_STATION;
 					this.disembarked = false;

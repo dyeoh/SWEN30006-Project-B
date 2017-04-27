@@ -13,7 +13,6 @@
 package com.unimelb.swen30006.metromadness;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 // Imports for parsing XML files
@@ -37,19 +36,22 @@ import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class MapReader {
 
-	public ArrayList<Train> trains;
-	public HashMap<String, Station> stations;
-	public HashMap<String, Line> lines;
+	private ArrayList<Train> trains;
+	private HashMap<String, Station> stations;
+	private HashMap<String, Line> lines;
 
-	public boolean processed;
-	public String filename;
+	private boolean processed;
+	private String filename;
+	private Simulation sim;
 
-	public MapReader(String filename){
+	public MapReader(Simulation sim, String filename){
 		this.trains = new ArrayList<Train>();
 		this.stations = new HashMap<String, Station>();
 		this.lines = new HashMap<String, Line>();
-		this.filename = filename;
-		this.processed = false;
+		this.setFilename(filename);
+		this.setProcessed(false);
+		this.sim = sim;
+		this.process();
 	}
 
 	public void process(){
@@ -65,7 +67,7 @@ public class MapReader {
 			Array<Element> stationList = stations.getChildrenByName("station");
 			for(Element e : stationList){
 				Station s = processStation(e);
-				this.stations.put(s.name, s);
+				this.stations.put(s.getName(), s);
 			}
 			
 			// Process Lines
@@ -73,7 +75,7 @@ public class MapReader {
 			Array<Element> lineList = lines.getChildrenByName("line");
 			for(Element e : lineList){
 				Line l = processLine(e);
-				this.lines.put(l.name, l);
+				this.lines.put(l.getName(), l);
 			}
 
 			// Process Trains
@@ -84,27 +86,15 @@ public class MapReader {
 				this.trains.add(t);
 			}
 			
-			this.processed = true;
+			this.setProcessed(true);
+			sim.setLines(this.lines.values());
+			sim.setStations(this.stations.values());
+			sim.setTrains(this.trains);
 			
 		} catch (Exception e){
 			e.printStackTrace();
 			System.exit(0);
 		}
-	}
-	
-	public Collection<Train> getTrains(){
-		if(!this.processed) { this.process(); }
-		return this.trains;
-	}
-	
-	public Collection<Line> getLines(){
-		if(!this.processed) { this.process(); }
-		return this.lines.values();
-	}
-	
-	public Collection<Station> getStations(){
-		if(!this.processed) { this.process(); }
-		return this.stations.values();
 	}
 
 	private Train processTrain(Element e){
@@ -180,5 +170,21 @@ public class MapReader {
 		float green = e.getFloat("green")/255f;
 		float blue = e.getFloat("blue")/255f;
 		return new Color(red, green, blue, 1f);
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 }

@@ -38,7 +38,8 @@ public class MetroMadness extends ApplicationAdapter {
     int VIEWPORT_WIDTH=200;
 	float viewport_width;
 
-	// Data for simluation, rendering and camera.
+	// Data for simluation, rendering and camera, and reading the map
+	MapReader mapReader;
 	Simulation sim;
 	ShapeRenderer shapeRenderer;
 	OrthographicCamera camera;
@@ -57,7 +58,10 @@ public class MetroMadness extends ApplicationAdapter {
 	@Override
 	public void create () {
 		// Create the simulation
-		sim = new Simulation("filename");		
+		sim = new Simulation();		
+		
+		//Create MapReader
+		mapReader = new MapReader(sim, "filename");
 		
 		// Setup our 2D Camera
         float w = Gdx.graphics.getWidth();

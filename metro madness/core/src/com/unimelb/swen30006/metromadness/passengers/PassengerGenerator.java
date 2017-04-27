@@ -29,17 +29,17 @@ public class PassengerGenerator {
 	
 	
 	// The station that passengers are getting on
-	public Station s;
+	private Station s;
 	// The line they are travelling on
-	public ArrayList<Line> lines;
+	private ArrayList<Line> lines;
 	
 	// The max volume
-	public float maxVolume;
+	private float maxVolume;
 	
 	public PassengerGenerator(Station s, ArrayList<Line> lines, float max){
 		this.s = s;
 		this.lines = lines;
-		this.maxVolume = max;
+		this.setMaxVolume(max);
 	}
 	
 	//Generates a random amount of passengers
@@ -56,7 +56,7 @@ public class PassengerGenerator {
 	public Passenger generatePassenger(Random random){
 		// Pick a random station from the line
 		Line l = this.lines.get(random.nextInt(this.lines.size()));
-		int current_station = l.stations.indexOf(this.s);
+		int current_station = l.getStations().indexOf(this.s);
 		
 		//Sets direction of the passenger at random
 		boolean forward = random.nextBoolean();
@@ -65,7 +65,7 @@ public class PassengerGenerator {
 		if(current_station == 0){
 			//System.out.println("forward");
 			forward = true;
-		} else if (current_station == l.stations.size()-1){
+		} else if (current_station == l.getStations().size()-1){
 			//System.out.println("backward");
 			forward = false;
 		}
@@ -82,17 +82,17 @@ public class PassengerGenerator {
 		if (forward){
 			//Get random station in the forward direction if active station
 			if (flag == 0){
-				index = random.nextInt(l.stations.size()-1-current_station) + current_station + 1;
-				Station s = l.stations.get(index);
+				index = random.nextInt(l.getStations().size()-1-current_station) + current_station + 1;
+				Station s = l.getStations().get(index);
 				return new Passenger(idGen++, 0, this.s, s);
 			}
 			//Get next cargo station in the forward direction
 			else{
-				while(current_station <= l.stations.size()-1){
+				while(current_station <= l.getStations().size()-1){
 				//System.out.println("current: " + current_station + " max: " + (l.stations.size()-1));
-				if(l.stations.get(current_station) instanceof CargoStation 
-						&& l.stations.get(current_station) != this.s){
-					Station s = l.stations.get(current_station);
+				if(l.getStations().get(current_station) instanceof CargoStation 
+						&& l.getStations().get(current_station) != this.s){
+					Station s = l.getStations().get(current_station);
 					return new Passenger(idGen++, random.nextInt(51), this.s, s);
 				}
 				current_station ++;
@@ -103,15 +103,15 @@ public class PassengerGenerator {
 			if (flag == 0 ){
 				//Get random station in the backward direction
 				index = current_station - 1 - random.nextInt(current_station);
-				Station s = l.stations.get(index);
+				Station s = l.getStations().get(index);
 				return new Passenger(idGen++, 0, this.s, s);
 			}
 			else{
 				//Get next cargo station in the backward direction
 				while(current_station >= 0){
-					if(l.stations.get(current_station) instanceof CargoStation
-							&& l.stations.get(current_station) != this.s){
-						Station s = l.stations.get(current_station);
+					if(l.getStations().get(current_station) instanceof CargoStation
+							&& l.getStations().get(current_station) != this.s){
+						Station s = l.getStations().get(current_station);
 						return new Passenger(idGen++, random.nextInt(51), this.s, s);
 					}
 					current_station --;
@@ -120,6 +120,14 @@ public class PassengerGenerator {
 		}
 		//Passenger failed to be generated
 		return null;
+	}
+
+	public float getMaxVolume() {
+		return maxVolume;
+	}
+
+	public void setMaxVolume(float maxVolume) {
+		this.maxVolume = maxVolume;
 	}
 	
 }

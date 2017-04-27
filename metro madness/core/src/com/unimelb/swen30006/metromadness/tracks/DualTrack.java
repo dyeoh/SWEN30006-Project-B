@@ -20,8 +20,8 @@ import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class DualTrack extends Track {
 
-	public boolean forwardOccupied;
-	public boolean backwardOccupied;
+	private boolean forwardOccupied;
+	private boolean backwardOccupied;
 	
 	public DualTrack(Float start, Float end, Color col) {
 		super(start, end, col);

@@ -19,7 +19,7 @@ public class SimpleRouter implements PassengerRouter {
 
 	@Override
 	public boolean shouldLeave(Station current, Passenger p) {
-		return current.equals(p.destination);
+		return current.equals(p.getDestination());
 	}
 
 }

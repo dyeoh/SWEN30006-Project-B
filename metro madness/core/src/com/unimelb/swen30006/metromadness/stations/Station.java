@@ -25,23 +25,23 @@ import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class Station {
 	
-	public static final int PLATFORMS=2;
+	protected static final int PLATFORMS=2;
 	
-	public Point2D.Float position;
-	public static final float RADIUS=6;
-	public static final int NUM_CIRCLE_STATMENTS=100;
-	public static final int MAX_LINES=3;
-	public String name;
-	public ArrayList<Line> lines;
-	public ArrayList<Train> trains;
-	public static final float DEPARTURE_TIME = 2;
-	public PassengerRouter router;
+	private Point2D.Float position;
+	protected static final float RADIUS=6;
+	protected static final int NUM_CIRCLE_STATMENTS=100;
+	protected static final int MAX_LINES=3;
+	private String name;
+	protected ArrayList<Line> lines;
+	protected ArrayList<Train> trains;
+	private static final float DEPARTURE_TIME = 2;
+	private PassengerRouter router;
 	protected PassengerGenerator g;
 
 	public Station(float x, float y, PassengerRouter router, String name){
-		this.name = name;
+		this.setName(name);
 		this.router = router;
-		this.position = new Point2D.Float(x,y);
+		this.setPosition(new Point2D.Float(x,y));
 		this.lines = new ArrayList<Line>();
 		this.trains = new ArrayList<Train>();
 	}
@@ -54,8 +54,8 @@ public class Station {
 		float radius = RADIUS;
 		for(int i=0; (i<this.lines.size() && i<MAX_LINES); i++){
 			Line l = this.lines.get(i);
-			renderer.setColor(l.lineColour);
-			renderer.circle(this.position.x, this.position.y, radius, NUM_CIRCLE_STATMENTS);
+			renderer.setColor(l.getLineColour());
+			renderer.circle(this.getPosition().x, this.getPosition().y, radius, NUM_CIRCLE_STATMENTS);
 			radius = radius - 1;
 		}
 		
@@ -63,7 +63,7 @@ public class Station {
 		float t = this.trains.size()/(float)PLATFORMS;
 		Color c = Color.WHITE.cpy().lerp(Color.DARK_GRAY, t);
 		renderer.setColor(c);
-		renderer.circle(this.position.x, this.position.y, radius, NUM_CIRCLE_STATMENTS);		
+		renderer.circle(this.getPosition().x, this.getPosition().y, radius, NUM_CIRCLE_STATMENTS);		
 	}
 	
 	public void enter(Train t) throws Exception {
@@ -83,7 +83,7 @@ public class Station {
 		}
 	}
 	
-	public boolean canEnter(Line l) throws Exception {
+	public boolean canEnter() throws Exception {
 		return trains.size() < PLATFORMS;
 	}
 
@@ -98,12 +98,28 @@ public class Station {
 
 	@Override
 	public String toString() {
-		return "Station [position=" + position + ", name=" + name + ", trains=" + trains.size()
+		return "Station [position=" + getPosition() + ", name=" + getName() + ", trains=" + trains.size()
 				+ ", router=" + router + "]";
 	}
 	
 	public PassengerGenerator getGenerator(){
 		return g;
+	}
+
+	public Point2D.Float getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point2D.Float position) {
+		this.position = position;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

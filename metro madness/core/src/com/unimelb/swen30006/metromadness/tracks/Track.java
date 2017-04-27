@@ -19,12 +19,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.unimelb.swen30006.metromadness.trains.Train;
 
 public class Track {
-	public static final float DRAW_RADIUS=10f;
-	public static final int LINE_WIDTH=6;
-	public Point2D.Float startPos;
-	public Point2D.Float endPos;
-	public Color trackColour;
-	public boolean occupied;
+	protected static final float DRAW_RADIUS=10f;
+	protected static final int LINE_WIDTH=6;
+	protected Point2D.Float startPos;
+	protected Point2D.Float endPos;
+	protected Color trackColour;
+	protected boolean occupied;
 	
 	public Track(Point2D.Float start, Point2D.Float end, Color trackCol){
 		this.startPos = start;
@@ -53,5 +53,9 @@ public class Track {
 
 	public void leave(Train t){
 		this.occupied = false;
+	}
+
+	public static float getDrawRadius() {
+		return DRAW_RADIUS;
 	}
 }

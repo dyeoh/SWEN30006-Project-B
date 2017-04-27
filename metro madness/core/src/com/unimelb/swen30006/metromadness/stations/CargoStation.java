@@ -31,8 +31,8 @@ public class CargoStation extends Station {
 	// Logger
 	private static Logger logger = LogManager.getLogger();
 	
-	public ArrayList<Passenger> waiting;
-	public float maxVolume;
+	private ArrayList<Passenger> waiting;
+	private float maxVolume;
 	
 	public CargoStation(float x, float y, PassengerRouter router, String name, float maxPax) {
 		super(x, y, router, name);
@@ -56,7 +56,7 @@ public class CargoStation extends Station {
 			while(pIter.hasNext()){
 				Passenger p = pIter.next();
 				try {
-					logger.info("Passenger "+p.id+" carrying "+p.getCargo().getWeight() +" kg cargo embarking at "+this.name+" heading to "+p.destination.name);
+					logger.info("Passenger "+p.id+" carrying "+p.getCargo().getWeight() +" kg cargo embarking at "+this.getName()+" heading to "+p.getDestination().getName());
 					t.embark(p);
 					pIter.remove();
 				} catch (Exception e){
@@ -77,7 +77,7 @@ public class CargoStation extends Station {
 				}
 				else{
 					try {
-						logger.info("Passenger "+p.id+" carrying "+p.getCargo().getWeight() +" kg embarking at "+this.name+" heading to "+p.destination.name);
+						logger.info("Passenger "+p.id+" carrying "+p.getCargo().getWeight() +" kg embarking at "+this.getName()+" heading to "+p.getDestination().getName());
 						t.embark(p);
 					}
 					catch(Exception e){
@@ -95,8 +95,8 @@ public class CargoStation extends Station {
 		float radius = RADIUS;
 		for(int i=0; (i<this.lines.size() && i<MAX_LINES); i++){
 			Line l = this.lines.get(i);
-			renderer.setColor(l.lineColour);
-			renderer.circle(this.position.x, this.position.y, radius, NUM_CIRCLE_STATMENTS);
+			renderer.setColor(l.getLineColour());
+			renderer.circle(this.getPosition().x, this.getPosition().y, radius, NUM_CIRCLE_STATMENTS);
 			radius = radius - 1;
 		}
 		
@@ -108,6 +108,6 @@ public class CargoStation extends Station {
 		}
 		
 		renderer.setColor(c);
-		renderer.circle(this.position.x, this.position.y, radius, NUM_CIRCLE_STATMENTS);
+		renderer.circle(this.getPosition().x, this.getPosition().y, radius, NUM_CIRCLE_STATMENTS);
 	}
 }
